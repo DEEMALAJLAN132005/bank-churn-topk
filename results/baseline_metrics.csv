@@ -1,0 +1,7 @@
+model,split,threshold,accuracy,precision,recall,f1,roc_auc
+logistic_regression,val,0.5000,0.8147,0.7258,0.1471,0.2446,0.7870
+logistic_regression,test,0.5000,0.8127,0.6818,0.1475,0.2426,0.7956
+logistic_regression,test (val-tuned thr),0.2618,0.7780,0.4630,0.5738,0.5124,0.7956
+random_forest,val,0.5000,0.8647,0.8411,0.4150,0.5558,0.8880
+random_forest,test,0.5000,0.8673,0.8397,0.4295,0.5683,0.8684
+random_forest,test (val-tuned thr),0.3282,0.8600,0.6779,0.5934,0.6329,0.8684
