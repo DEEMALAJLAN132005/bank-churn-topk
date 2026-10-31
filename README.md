@@ -1,4 +1,4 @@
-# Bank customer churn under limited contact capacity
+# Bank customer churn Prediction
 
 CAI 421 Checkpoint 2 project. We compare Logistic Regression (LR), Random Forest (RF), and a multilayer perceptron (MLP) on a shared stratified bank churn split. We evaluate classification and the top 10% and 20% of customers ranked by predicted churn probability.
 
