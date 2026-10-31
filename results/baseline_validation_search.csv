@@ -1,0 +1,15 @@
+model,params,val_roc_auc
+logistic_regression,{'C_': 0.01},0.7869576641376819
+logistic_regression,{'C_': 0.1},0.7851731424004554
+logistic_regression,{'C_': 1},0.7847434339453258
+logistic_regression,{'C_': 10},0.7845846881466154
+logistic_regression,{'C_': 100},0.784565529170909
+random_forest,"{'n_estimators': 300, 'max_depth': None, 'min_samples_leaf': 1}",0.8767462037858136
+random_forest,"{'n_estimators': 300, 'max_depth': None, 'min_samples_leaf': 5}",0.8864064330366429
+random_forest,"{'n_estimators': 300, 'max_depth': None, 'min_samples_leaf': 10}",0.8848299230356576
+random_forest,"{'n_estimators': 300, 'max_depth': 8, 'min_samples_leaf': 1}",0.8879884170306873
+random_forest,"{'n_estimators': 300, 'max_depth': 8, 'min_samples_leaf': 5}",0.8854950131923234
+random_forest,"{'n_estimators': 300, 'max_depth': 8, 'min_samples_leaf': 10}",0.885919247654394
+random_forest,"{'n_estimators': 300, 'max_depth': 12, 'min_samples_leaf': 1}",0.8835024797188556
+random_forest,"{'n_estimators': 300, 'max_depth': 12, 'min_samples_leaf': 5}",0.8863790630713481
+random_forest,"{'n_estimators': 300, 'max_depth': 12, 'min_samples_leaf': 10}",0.8847450761432434
