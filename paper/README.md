@@ -1,3 +1,4 @@
-# Checkpoint 2 paper
+# Paper materials
 
-This folder contains the conference-template paper draft and its architecture diagram.
+- [Bank Customer Churn Prediction (PDF)](Bank_Churn_Paper_GitHub.pdf)
+- [Experimental pipeline and MLP architecture (PDF)](architecture_diagram.pdf)

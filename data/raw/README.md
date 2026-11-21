@@ -1,6 +1,6 @@
 # Dataset
 
-Place `Churn_Modelling.csv` in this folder.
+`Churn_Modelling.csv` is included in this folder. If replacing it, use the original file from the source below.
 
 Source: [Churn for Bank Customers on Kaggle](https://www.kaggle.com/datasets/mathchi/churn-for-bank-customers)
 

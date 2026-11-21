@@ -1,0 +1,5 @@
+comparison,contact_fraction,k,metric,observed_difference,ci95_lower,ci95_upper,includes_zero,valid_resamples,seed,method
+MLP minus Random Forest,0.10000000,150,precision_at_k,-0.00666667,-0.05333333,0.04000000,True,10000,42,paired percentile bootstrap
+MLP minus Random Forest,0.10000000,150,recall_at_k,-0.00327869,-0.02666766,0.02153957,True,10000,42,paired percentile bootstrap
+MLP minus Random Forest,0.20000000,300,precision_at_k,0.00666667,-0.03666667,0.03333333,True,10000,42,paired percentile bootstrap
+MLP minus Random Forest,0.20000000,300,recall_at_k,0.00655738,-0.03594771,0.03384746,True,10000,42,paired percentile bootstrap

@@ -36,7 +36,7 @@ def test_prediction_files_aligned_with_test_split():
     labels = pd.read_csv(C.PRED_DIR / "test_labels.csv")
     assert (labels.RowNumber.values == test.RowNumber.values).all()
     assert (labels.y_true.values == test[C.TARGET].values).all()
-    for m in ("logistic_regression", "random_forest"):
+    for m in ("logistic_regression", "random_forest", "mlp"):
         p = pd.read_csv(C.PRED_DIR / f"{m}_test_predictions.csv")
         assert (p.RowNumber.values == test.RowNumber.values).all()
         assert (p.CustomerId.values == test.CustomerId.values).all()

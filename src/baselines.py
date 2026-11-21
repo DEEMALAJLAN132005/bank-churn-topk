@@ -7,7 +7,7 @@ Protocol
   * TEST is used once, after selection, to produce the reported numbers.
   * Class decision threshold = 0.5 (headline). A validation-tuned (max-F1)
     threshold is reported as a supplementary row; it never uses test data.
-  * Hand-off files for Member 3 are written in the row order of
+  * Prediction files for the evaluation scripts are written in the row order of
     data/processed/split_test.csv.
 """
 import itertools
@@ -88,7 +88,7 @@ def main():
             test=metrics(yte, pte),
             test_valtuned_threshold=metrics(yte, pte, thr_val))
 
-        # hand-off for Member 3 (same order as split_test.csv)
+        # predictions for evaluation (same order as split_test.csv)
         out = test_ids.copy()
         out["y_true"] = yte
         out["y_pred"] = (pte >= 0.5).astype(int)

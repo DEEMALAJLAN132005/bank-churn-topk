@@ -1,0 +1,3 @@
+model,auc_all_inputs,auc_without_numofproducts,drop
+random_forest,0.8684,0.8098,0.0586
+mlp,0.8648,0.8042,0.0606

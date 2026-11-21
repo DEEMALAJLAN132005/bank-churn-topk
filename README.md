@@ -1,208 +1,72 @@
 # Bank Customer Churn Prediction
 
-CAI 421 Checkpoint 2 project comparing Logistic Regression, Random Forest, and a Multilayer Perceptron (MLP) for bank customer churn prediction.
+This project (CAI 421) compares Logistic Regression, Random Forest, and a multilayer perceptron (MLP) on the same stratified 70/15/15 split (seed 42). The pipeline reports classification and ranking metrics at contact capacities of 10% and 20% of the held-out test set.
 
-The models use the same stratified train, validation, and test split. Performance is evaluated using accuracy, precision, recall, F1-score, ROC-AUC, Precision@k, and Recall@k for the top 10% and 20% of customers ranked by predicted churn probability.
+## Setup
 
-## Dataset
-
-The project uses the [Churn for Bank Customers dataset from Kaggle](https://www.kaggle.com/datasets/mathchi/churn-for-bank-customers), which is listed under the CC0 Public Domain license.
-
-The dataset contains:
-
-- 10,000 customer records
-- 14 original columns
-- 2,037 customers with `Exited = 1`
-- 7,963 customers with `Exited = 0`
-
-The prediction target is `Exited`, where:
-
-- `1` means the customer left the bank.
-- `0` means the customer remained with the bank.
-
-`RowNumber`, `CustomerId`, and `Surname` are excluded from the model inputs because they are identifiers rather than meaningful predictors.
-
-## Data Split
-
-The customers are divided using a stratified split:
-
-- Training: 7,000 customers (70%)
-- Validation: 1,500 customers (15%)
-- Testing: 1,500 customers (15%)
-
-Stratification maintains a similar churn proportion in all three sets. Random seed `42` is used to reproduce the same split and model results.
-
-All models use the same customers and row order for a fair comparison.
-
-## Preprocessing
-
-Preprocessing is fitted using the training data only.
-
-The pipeline:
-
-- Standardizes `CreditScore`, `Age`, `Tenure`, `Balance`, `NumOfProducts`, and `EstimatedSalary`.
-- Retains `HasCrCard` and `IsActiveMember` as binary features.
-- Encodes `Gender`.
-- One-hot encodes `Geography`.
-- Produces 12 model input features.
-
-The fitted preprocessing object and transformed data files are stored in `data/processed/`.
-
-## Models
-
-### Logistic Regression
-
-Logistic Regression is used as an interpretable linear baseline. The regularization parameter `C` is selected using validation ROC-AUC from:
-
-```text
-0.01, 0.1, 1, 10, 100
-```
-
-The selected value is `C = 0.01`.
-
-### Random Forest
-
-Random Forest is used as a nonlinear tree-based baseline. The validation search compares:
-
-- `max_depth`: None, 8, and 12
-- `min_samples_leaf`: 1, 5, and 10
-- `n_estimators`: 300
-
-The selected settings are:
-
-```text
-max_depth = 8
-min_samples_leaf = 1
-n_estimators = 300
-```
-
-### Multilayer Perceptron
-
-The MLP compares two candidate hidden-layer architectures using validation ROC-AUC:
-
-```text
-(32, 16)
-(64, 32)
-```
-
-The selected architecture is `(32, 16)`.
-
-The MLP uses:
-
-- ReLU activation
-- Adam optimizer
-- Learning rate: 0.001
-- L2 regularization (`alpha`): 0.001
-- Maximum iterations: 500
-- Early stopping
-- Random seed: 42
-
-## Test Results
-
-All primary classification results use a decision threshold of `0.5`.
-
-| Model | Accuracy | Precision | Recall | F1-score | ROC-AUC |
-|---|---:|---:|---:|---:|---:|
-| Logistic Regression | 0.8127 | 0.6818 | 0.1475 | 0.2426 | 0.7956 |
-| Random Forest | 0.8673 | 0.8397 | 0.4295 | 0.5683 | 0.8684 |
-| MLP | 0.8647 | 0.7550 | 0.4951 | 0.5980 | 0.8648 |
-
-Random Forest achieves the highest accuracy, precision, and ROC-AUC. The MLP achieves the highest recall and F1-score.
-
-The project also evaluates each model under limited contact capacity using Precision@k and Recall@k for the top 10% and 20% of customers ranked by predicted churn probability.
-
-## Repository Structure
-
-```text
-bank-churn-topk/
-├── data/
-│   ├── raw/
-│   │   ├── Churn_Modelling.csv
-│   │   └── README.md
-│   └── processed/
-│       ├── feature_names.txt
-│       ├── preprocessor.joblib
-│       ├── split_train.csv
-│       ├── split_val.csv
-│       ├── split_test.csv
-│       ├── train.npz
-│       ├── val.npz
-│       └── test.npz
-├── docs/
-│   └── dataset_section.md
-├── paper/
-│   ├── Checkpoint2_Bank_Churn.pdf
-│   ├── architecture_diagram.pdf
-│   └── README.md
-├── results/
-│   ├── predictions/
-│   │   ├── logistic_regression_test_predictions.csv
-│   │   ├── random_forest_test_predictions.csv
-│   │   ├── mlp_test_predictions.csv
-│   │   └── test_labels.csv
-│   ├── baseline_metrics.csv
-│   ├── baseline_metrics.json
-│   ├── baseline_validation_search.csv
-│   ├── logistic_regression.joblib
-│   ├── random_forest.joblib
-│   ├── overall_comparison.csv
-│   └── topk_comparison.csv
-├── src/
-│   ├── __init__.py
-│   ├── config.py
-│   ├── preprocess.py
-│   ├── baselines.py
-│   ├── mlp.py
-│   └── evaluate.py
-├── tests/
-│   └── test_pipeline.py
-├── .gitignore
-├── README.md
-├── reproduce.sh
-└── requirements.txt
-```
-
-## Requirements
-
-The supplied results were produced using Python 3.12 on CPU.
-
-Install the required packages with:
+Use Python 3.12 on CPU. From the repository root (the directory containing `requirements.txt`), create a virtual environment:
 
 ```bash
-pip install -r requirements.txt
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
 ```
 
-## Reproducing the Project
+On Windows, create the environment and install packages in Command Prompt:
 
-From the repository root, run:
+```bat
+py -3.12 -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+The input CSV from the Kaggle Churn for Bank Customers dataset is included at `data/raw/Churn_Modelling.csv`. See the [dataset notes](data/raw/README.md) for the source and license.
+
+## Reproduce the results
+
+With the environment activated, run:
 
 ```bash
 bash reproduce.sh
 ```
 
-The script:
+On Windows without Bash, run these commands from the same directory:
 
-1. Preprocesses the dataset and creates the shared split.
-2. Trains Logistic Regression and Random Forest.
-3. Trains the MLP.
-4. Evaluates all three models.
-5. Runs pipeline integrity checks.
-
-On Windows without Bash, run:
-
-```bash
-python -m src.preprocess
-python -m src.baselines
-python -m src.mlp
-python -m src.evaluate
-python -m tests.test_pipeline
+```bat
+.venv\Scripts\python.exe -m src.preprocess
+.venv\Scripts\python.exe -m src.baselines
+.venv\Scripts\python.exe -m src.mlp
+.venv\Scripts\python.exe -m src.evaluate
+.venv\Scripts\python.exe -m src.ablation_numofproducts
+.venv\Scripts\python.exe -m tests.test_pipeline
+.venv\Scripts\python.exe -m src.bootstrap_analysis
+.venv\Scripts\python.exe -m src.plot_results
 ```
+
+The preprocessing transform is fitted on the 7,000 training customers and yields 12 features. The external validation set (1,500 customers) selects configurations by ROC-AUC. The MLP compares hidden widths (32, 16) and (64, 32), using Adam, ReLU hidden activations, a learning rate of 0.001, L2 alpha of 0.001, and a maximum of 500 epochs. Scikit-learn's automatic batch size gives 200 samples. Early stopping monitors accuracy on an internal 10% holdout from the training split with tolerance 0.0001 and `n_iter_no_change=20`. The MLP script prints wall-clock fit time and epochs for each candidate.
 
 ## Outputs
 
-- `data/processed/` contains the fixed data splits, transformed arrays, feature names, and fitted preprocessor.
-- `results/predictions/` contains aligned test labels, class predictions, and churn probabilities.
-- `results/overall_comparison.csv` contains the standard test metrics.
-- `results/topk_comparison.csv` contains Precision@k and Recall@k results.
-- `paper/Checkpoint2_Bank_Churn.pdf` contains the Checkpoint 2 paper.
-- `paper/architecture_diagram.pdf` contains the final architecture and evaluation pipeline diagram.
+| Location | Contents |
+| --- | --- |
+| `data/processed/` | Split CSVs, transformed arrays, feature names, and the fitted preprocessing object |
+| `results/predictions/` | Test labels and aligned class predictions and churn probabilities |
+| `results/baseline_*` and `results/*.joblib` | Baseline metrics, validation search, and fitted baselines |
+| `results/mlp_metrics.json` | MLP metrics at threshold 0.5 and at the validation-tuned threshold (supplementary), with the selected architecture |
+| `results/ablation_numofproducts.csv` | Test ROC-AUC of Random Forest and MLP with and without the NumOfProducts input |
+| `results/overall_comparison.csv` | Accuracy, precision, recall, F1, and ROC-AUC on the 1,500 test customers |
+| `results/topk_comparison.csv` | Precision@k and Recall@k for k = 150 and 300 |
+| `results/bootstrap_comparison.csv` | Approximate 95% percentile intervals for the MLP minus Random Forest differences across 10,000 paired resamples (seed 42) |
+| `results/figures/topk_comparison.png` and `results/figures/topk_comparison.svg` | Precision@k and Recall@k comparison figure |
+
+After a full run, `python -m src.bootstrap_analysis` reruns the paired analysis using the saved test predictions. `python -m src.plot_results` recreates the figure from the saved top-k table.
+
+Source modules are in `src/`, integrity checks are in `tests/`, dataset notes are in `docs/`, and the paper materials are in `paper/`.
+
+## Paper
+
+- [Bank Customer Churn Prediction (PDF)](paper/Bank_Churn_Paper_GitHub.pdf)
+- [Experimental pipeline and MLP architecture (PDF)](paper/architecture_diagram.pdf)
+
+## Verification run
+
+The full Bash workflow passed on an Apple M4 CPU with 24 GB RAM, Python 3.12.14, and scikit-learn 1.8.0. MLP fit times were 0.623 s for (32, 16) and 0.409 s for (64, 32), measured around each `fit` call. These timings describe the verification run. A second full run on Python 3.13.x with scikit-learn 1.9.1 reproduced the reported test metrics, top-k counts, and bootstrap intervals; all four bootstrap intervals include zero.
